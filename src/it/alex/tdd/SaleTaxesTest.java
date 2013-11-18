@@ -1,18 +1,22 @@
 package it.alex.tdd;
 
 import it.alex.receipt.Receipt;
-import it.alex.saletax.Item;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.Assert;
 
+import org.junit.Before;
 import org.junit.Test;
 
 public class SaleTaxesTest {
 	
-	List<Item> listItems = new ArrayList<Item>();
+	private Receipt receipt;
+	
+	@Before
+	public void setup() {
+		receipt = new Receipt();
+	}
 	
 	/*
 	 * Test of SalesTaxes and Total. The item list is a book, a cd and a bar chocolate
@@ -20,11 +24,11 @@ public class SaleTaxesTest {
 	@Test
 	public void purchaseOneBookOneCDOneChocolateBar() throws Exception{
 		
-		addItem(1, " book at ", 12.49);
-		addItem(1, " music CD at ", 14.99);
-		addItem(1, " chocolate bar at ", 0.85);
+		receipt.addItem(1, "book", 12.49);
+		receipt.addItem(1, "music CD", 14.99);
+		receipt.addItem(1, "chocolate bar", 0.85);
 		
-		check(1.50, 29.83, listItems);
+		check(1.50, 29.83);
 	}
 	
 	/*
@@ -34,10 +38,10 @@ public class SaleTaxesTest {
 	@Test
 	public void purchaseOneImportedBoxChocolatesOneImportedPerfume() throws Exception{
 		
-		addItem(1, " imported box of chocolates at ", 10.00);
-		addItem(1, " imported bottle of perfume at ", 47.50);
+		receipt.addItem(1, "imported box of chocolates", 10.00);
+		receipt.addItem(1, "imported bottle of perfume", 47.50);
 		
-		check(7.65, 65.15, listItems);
+		check(7.65, 65.15);
 	}
 	
 	/*
@@ -50,16 +54,17 @@ public class SaleTaxesTest {
 	@Test
 	public void purchaseOneImpPerfumeAndOnePerfumeAndOnePillsAndOneImpChocolate() throws Exception{
 		
-		addItem(1, " imported bottle of perfume at  ", 27.99);
-		addItem(1, " bottle of perfume at ", 18.99);
-		addItem(1, " packet of headache pills at  ", 9.75);
-		addItem(1, " box of imported chocolates at ", 11.25);
+		receipt.addItem(1, "imported bottle of perfume", 27.99);
+		receipt.addItem(1, "bottle of perfume", 18.99);
+		receipt.addItem(1, "packet of headache pills", 9.75);
+		receipt.addItem(1, "box of imported chocolates", 11.25);
 		
-		check(6.70, 74.68, listItems);
+		check(6.70, 74.68);
 	}	
 	
 	/*
-	 * Test of SalesTaxes and Total. The item list is:
+	 * Test the items print.Test of SalesTaxes and Total. 
+	 * The item list is:
 	 * two imported bottle of perfume,
 	 * a bottle of perfume,
 	 * a packet of pills
@@ -68,34 +73,41 @@ public class SaleTaxesTest {
 	@Test
 	public void purchaseTwoImpPerfumeAndOnePerfumeAndOnePillsAndOneImpChocolate() throws Exception{
 		
-		addItem(2, " imported bottle of perfume at  ", 27.99);
-		addItem(1, " bottle of perfume at ", 18.99);
-		addItem(1, " packet of headache pills at  ", 9.75);
-		addItem(1, " box of imported chocolates at ", 11.25);
+		receipt.addItem(2, "imported bottle of perfume", 27.99);
+		receipt.addItem(1, "bottle of perfume", 18.99);
+		receipt.addItem(1, "packet of headache pills", 9.75);
+		receipt.addItem(1, "box of imported chocolates", 11.25);
 		
-		check(10.90, 106.87, listItems);
+		check(10.90, 106.87);
+		
+		List<String> items = receipt.print();
+		
+		Assert.assertTrue(items.get(0).contains("2"));
+		Assert.assertTrue(items.get(0).contains("imported bottle of perfume"));
+		Assert.assertTrue(items.get(0).contains("64.38"));
+		
+		Assert.assertTrue(items.get(1).contains("1"));
+		Assert.assertTrue(items.get(1).contains("bottle of perfume"));
+		Assert.assertTrue(items.get(1).contains("20.89"));
+		
+		Assert.assertTrue(items.get(2).contains("1"));
+		Assert.assertTrue(items.get(2).contains("packet of headache pills"));
+		Assert.assertTrue(items.get(2).contains("9.75"));
+		
+		Assert.assertTrue(items.get(3).contains("1"));
+		Assert.assertTrue(items.get(3).contains("box of imported chocolates"));
+		Assert.assertTrue(items.get(3).contains("11.85"));
+		
 	}
 	
-	private void check(double expectedSalesTaxes, double expectedTotal, List<Item> items ){
+	private void check(double expectedSalesTaxes, double expectedTotal){
 		
-		Receipt receipt = new Receipt();
-		receipt.calculate(items);
+		receipt.calculate();
 				
-		Assert.assertEquals(expectedSalesTaxes,receipt.getSalesTaxes() );
-		Assert.assertEquals(expectedTotal,receipt.getTotal() );
+		Assert.assertEquals(expectedSalesTaxes, receipt.getSalesTaxes());
+		Assert.assertEquals(expectedTotal, receipt.getTotal());
 		
-		receipt.print();	
-		
+		receipt.print();
 	}
-	
-	private void addItem(int quantity, String description, double price){
-		
-		Item item = new Item();
-		item.setQuantity(quantity);
-		item.setDescription(description);
-		item.setPrice(price);
-		listItems.add(item);
-		
-	}
-	
+
 }

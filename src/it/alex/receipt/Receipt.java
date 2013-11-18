@@ -3,13 +3,14 @@ package it.alex.receipt;
 import it.alex.saletax.Item;
 import it.alex.saletax.Tax;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Receipt {
 	
 	private double salesTaxes;
 	private double total;
-	private List<Item> items;
+	private List<Item> items = new ArrayList<Item>() ;
 	private static final float ROUND = 0.05f;
 	
 	public double getSalesTaxes() {
@@ -24,8 +25,18 @@ public class Receipt {
 		return (double)Math.round(cost * 100) / 100;
 	}
 	
-	public void calculate(List<Item> items) {
-		this.items = items;	
+	public void addItem(int quantity, String description, double price){
+		
+		Item item = new Item();
+		item.setQuantity(quantity);
+		item.setDescription(description);
+		item.setPrice(price);
+		items.add(item);
+		
+	}
+	
+	public void calculate(){
+		
 		for(Item item:items){
 			boolean exempt = false;
 			boolean imported = false;
@@ -62,9 +73,11 @@ public class Receipt {
 			}
 		}
 		total += salesTaxes;
+	
 	}
 	
-	public void print() {
+	public void printT() {
+		
 		if(this.items != null){
 			System.out.println("\nReceipt");
 			for(Item item:items){
@@ -75,6 +88,23 @@ public class Receipt {
 			}
 			System.out.println("SalesTaxes: " + getSalesTaxes() + "\nTotal: " + getTotal());
 		}
+		
 	}	
-
+	
+	
+	public List<String> print() {
+		
+		List<String> listItems = new ArrayList<String>();
+		System.out.println("\nReceipt");
+		for(Item item:items){
+			int quantity = item.getQuantity();
+			String description = item.getDescription();
+			double price = item.getPrice();
+			System.out.println(quantity + " " + description + ": " + price);
+			listItems.add(String.valueOf(quantity) + " " + description + " " + String.valueOf(price));
+		}
+		System.out.println("SalesTaxes: " + getSalesTaxes() + "\nTotal: " + getTotal());
+		return listItems;
+	}	
+	
 }
