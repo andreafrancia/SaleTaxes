@@ -76,22 +76,6 @@ public class Receipt {
 	
 	}
 	
-	public void printT() {
-		
-		if(this.items != null){
-			System.out.println("\nReceipt");
-			for(Item item:items){
-				int quantity = item.getQuantity();
-				String description = item.getDescription();
-				double price = item.getPrice();
-				System.out.println(quantity + " " + description + ": " + price);
-			}
-			System.out.println("SalesTaxes: " + getSalesTaxes() + "\nTotal: " + getTotal());
-		}
-		
-	}	
-	
-	
 	public List<String> print() {
 		
 		List<String> listItems = new ArrayList<String>();
