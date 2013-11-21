@@ -25,26 +25,6 @@ public class Receipt {
 		return (double)Math.round(cost * 100) / 100;
 	}
 		
-	public void addItem(int quantity, String description, double price){
-		
-		boolean exempt = false;
-		Item item = new Item();
-		for(ExemptItem.BASIC_SALES_EXEMPT basicSalesExempt : ExemptItem.BASIC_SALES_EXEMPT.values()){
-			boolean contain = description.toUpperCase().contains(basicSalesExempt.name());
-			if(contain)
-				exempt = true;
-		}
-		if(exempt){
-			item = new ExemptItem();
-		}
-		item.setQuantity(quantity);
-		item.setDescription(description);
-		item.setPrice(price);
-		item.setImported(description.contains(Item.IMPORTED));
-		items.add(item);
-		
-	}
-	
 	public void calculate(){
 		
 		for(Item item:items){
@@ -57,6 +37,21 @@ public class Receipt {
 		
 	}
 	
+	public void addItem(int quantity, String description, double price){
+		
+		Item item = new Item();
+		for(ExemptItem.BASIC_SALES_EXEMPT basicSalesExempt : ExemptItem.BASIC_SALES_EXEMPT.values()){
+			if(description.toUpperCase().contains(basicSalesExempt.name()))
+				item = new ExemptItem();
+		}
+		item.setQuantity(quantity);
+		item.setDescription(description);
+		item.setPrice(price);
+		item.setImported(description.contains(Item.IMPORTED));
+		items.add(item);
+		
+	}
+
 	private void checkQuantity(Item item, double price) {
 		
 		for(int i = 0; i < item.getQuantity(); i++){
