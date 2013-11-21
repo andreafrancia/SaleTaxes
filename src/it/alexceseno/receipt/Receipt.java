@@ -2,6 +2,7 @@ package it.alexceseno.receipt;
 
 import it.alexceseno.item.ExemptItem;
 import it.alexceseno.item.Item;
+import it.alexceseno.util.UtilFormat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,17 +15,13 @@ public class Receipt {
 	private static final float ROUND = 0.05f;
 	
 	public double getSalesTaxes() {
-		return format(salesTaxes);
+		return UtilFormat.format(salesTaxes);
 	}
 	
 	public double getTotal() {
-		return format(total);
+		return UtilFormat.format(total);
 	}
 	
-	private double format(double cost){
-		return (double)Math.round(cost * 100) / 100;
-	}
-		
 	public void calculate(){
 		
 		for(Item item:items){
@@ -56,7 +53,7 @@ public class Receipt {
 		
 		for(int i = 0; i < item.getQuantity(); i++){
 			if(i>0){
-				item.setPrice(format(item.getPrice() + price));
+				item.setPrice(UtilFormat.format(item.getPrice() + price));
 			}
 			this.total += price;
 		}
@@ -69,7 +66,7 @@ public class Receipt {
 			double importedTaxes = ((float) Math.ceil((price * Item.IMPORT_DUTY)/ROUND)*ROUND);
 			for(int i = 0; i < item.getQuantity(); i++){
 				this.salesTaxes += importedTaxes;
-				item.setPrice(format(item.getPrice() + importedTaxes));
+				item.setPrice(UtilFormat.format(item.getPrice() + importedTaxes));
 			}
 		}
 		
@@ -77,13 +74,7 @@ public class Receipt {
 	
 	private void checkExempt(Item item, double price) {
 		
-		if(!(item instanceof ExemptItem)){
-			double basicTaxes = price * Item.TAX_SALES;
-			for(int i = 0; i < item.getQuantity(); i++){
-				this.salesTaxes += basicTaxes;
-				item.setPrice(format(item.getPrice() + basicTaxes));
-			}
-		}	
+		this.salesTaxes += item.addTaxSales(price);
 		
 	}	
 		

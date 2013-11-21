@@ -1,5 +1,7 @@
 package it.alexceseno.item;
 
+import it.alexceseno.util.UtilFormat;
+
 public class Item {
 	
 	private int quantity;
@@ -37,6 +39,16 @@ public class Item {
 	
 	public String toString(){
 		return "quantity[" + quantity + "] description[" + description + "] price["+ price + "] imported[" + imported + "]";
+	}
+	public double addTaxSales(double startPrice) {
+		
+		double basicTaxes = startPrice * Item.TAX_SALES;
+		double sumSalesTaxes = 0.00;
+		for(int i = 0; i < this.quantity; i++){
+			sumSalesTaxes += basicTaxes;
+			setPrice(UtilFormat.format(this.getPrice() + basicTaxes));
+		}
+		return sumSalesTaxes;
 	}
 	
 	
