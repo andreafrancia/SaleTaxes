@@ -40,6 +40,7 @@ public class Item {
 	public String toString(){
 		return "quantity[" + quantity + "] description[" + description + "] price["+ price + "] imported[" + imported + "]";
 	}
+	
 	public double addTaxSales(double startPrice) {
 		
 		double basicTaxes = startPrice * Item.TAX_SALES;

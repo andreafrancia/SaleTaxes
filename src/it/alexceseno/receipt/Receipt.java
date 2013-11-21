@@ -26,9 +26,9 @@ public class Receipt {
 		
 		for(Item item:items){
 			double price = item.getPrice();
-			checkExempt(item, price);
-			checkImported(item, price);
-			checkQuantity(item, price);
+			addSalesTaxes(item, price);
+			addTaxesForImportedItem(item, price);
+			updateTotal(item, price);
 		}
 		total += salesTaxes;
 		
@@ -49,7 +49,7 @@ public class Receipt {
 		
 	}
 
-	private void checkQuantity(Item item, double price) {
+	private void updateTotal(Item item, double price) {
 		
 		for(int i = 0; i < item.getQuantity(); i++){
 			if(i>0){
@@ -60,7 +60,7 @@ public class Receipt {
 		
 	}
 
-	private void checkImported(Item item, double price){
+	private void addTaxesForImportedItem(Item item, double price){
 		
 		if(item.isImported()){
 			double importedTaxes = ((float) Math.ceil((price * Item.IMPORT_DUTY)/ROUND)*ROUND);
@@ -72,7 +72,7 @@ public class Receipt {
 		
 	}
 	
-	private void checkExempt(Item item, double price) {
+	private void addSalesTaxes(Item item, double price) {
 		
 		this.salesTaxes += item.addTaxSales(price);
 		
