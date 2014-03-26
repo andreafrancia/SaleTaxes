@@ -19,66 +19,145 @@ public class SaleTaxesTest {
 	}
 	
 	/*
-	 * Test of SalesTaxes and Total. The item list is a book, a cd and a bar chocolate
+	 * SalesTaxes Test. The item list is a book, a cd and a bar chocolate
 	 */
 	@Test
-	public void purchaseOneBookOneCDOneChocolateBar() throws Exception{
+	public void purchaseOneBookOneCDOneChocolateBarSalesTaxes() throws Exception{
+		
+		addOneBookOneCDOneChocolateBar();
+		
+		checkSalesTaxes(1.50);
+	}
+		
+	/*
+	 * Total test. The item list is a book, a cd and a bar chocolate
+	 */
+	@Test
+	public void purchaseOneBookOneCDOneChocolateBarTotal() throws Exception{
+		
+		addOneBookOneCDOneChocolateBar();
+		
+		checkTotal(29.83);
+	}
+	
+	private void addOneBookOneCDOneChocolateBar() throws Exception{
 		
 		receipt.addItem(1, "book", 12.49);
 		receipt.addItem(1, "music CD", 14.99);
 		receipt.addItem(1, "chocolate bar", 0.85);
-		
-		check(1.50, 29.83);
 	}
 	
 	/*
-	 * Test of SalesTaxes and Total. The item list is an imported box of chocolate and an imported
+	 * SalesTaxes Test. The item list is an imported box of chocolate and an imported
 	 * bottle of perfume
 	 */
 	@Test
-	public void purchaseOneImportedBoxChocolatesOneImportedPerfume() throws Exception{
+	public void purchaseOneImportedBoxChocolatesOneImportedPerfumeSalesTaxes() throws Exception{
 		
-		receipt.addItem(1, "imported box of chocolates", 10.00);
-		receipt.addItem(1, "imported bottle of perfume", 47.50);
+		addOneImportedBoxChocolatesOneImportedPerfume();
 		
-		check(7.65, 65.15);
+		checkSalesTaxes(7.65);
 	}
 	
 	/*
-	 * Test of SalesTaxes and Total. The item list is:
+	 * Total test. The item list is an imported box of chocolate and an imported
+	 * bottle of perfume
+	 */
+	@Test
+	public void purchaseOneImportedBoxChocolatesOneImportedPerfumeTotal() throws Exception{
+		
+		addOneImportedBoxChocolatesOneImportedPerfume();
+		
+		checkTotal(65.15);
+	}
+	
+	private void addOneImportedBoxChocolatesOneImportedPerfume() throws Exception{
+		
+		receipt.addItem(1, "imported box of chocolates", 10.00);
+		receipt.addItem(1, "imported bottle of perfume", 47.50);
+	}
+	
+	/*
+	 * SalesTaxes test. The item list is:
 	 * an imported bottle of perfume,
 	 * a bottle of perfume,
 	 * a packet of pills
 	 * a box of imported chocolates
 	 */
 	@Test
-	public void purchaseOneImpPerfumeAndOnePerfumeAndOnePillsAndOneImpChocolate() throws Exception{
+	public void purchaseOneImpPerfumeAndOnePerfumeAndOnePillsAndOneImpChocolateSalesTaxes() throws Exception{
+		
+		addOneImpPerfumeAndOnePerfumeAndOnePillsAndOneImpChocolate();
+		
+		checkSalesTaxes(6.70);
+	}	
+	
+	/*
+	 * Total test. The item list is:
+	 * an imported bottle of perfume,
+	 * a bottle of perfume,
+	 * a packet of pills
+	 * a box of imported chocolates
+	 */
+	@Test
+	public void purchaseOneImpPerfumeAndOnePerfumeAndOnePillsAndOneImpChocolateTotal() throws Exception{
+		
+		addOneImpPerfumeAndOnePerfumeAndOnePillsAndOneImpChocolate();
+		
+		checkTotal(74.68);
+	}	
+	
+	private void addOneImpPerfumeAndOnePerfumeAndOnePillsAndOneImpChocolate() throws Exception{
 		
 		receipt.addItem(1, "imported bottle of perfume", 27.99);
 		receipt.addItem(1, "bottle of perfume", 18.99);
 		receipt.addItem(1, "packet of headache pills", 9.75);
 		receipt.addItem(1, "box of imported chocolates", 11.25);
-		
-		check(6.70, 74.68);
-	}	
-	
+	}
+
 	/*
-	 * Test the print items.Test of SalesTaxes and Total. 
-	 * The item list is:
+	 * SalesTaxes test. The item list is:
 	 * two imported bottle of perfume,
 	 * a bottle of perfume,
 	 * a packet of pills
 	 * a box of imported chocolates
 	 */
 	@Test
-	public void purchaseTwoImpPerfumeAndOnePerfumeAndOnePillsAndOneImpChocolate() throws Exception{
+	public void purchaseTwoImpPerfumeAndOnePerfumeAndOnePillsAndOneImpChocolateSalesTaxes() throws Exception{
 		
-		receipt.addItem(2, "imported bottle of perfume", 27.99);
-		receipt.addItem(1, "bottle of perfume", 18.99);
-		receipt.addItem(1, "packet of headache pills", 9.75);
-		receipt.addItem(1, "box of imported chocolates", 11.25);
+		addTwoImpPerfumeAndOnePerfumeAndOnePillsAndOneImpChocolate();
 		
-		check(10.90, 106.87);
+		checkSalesTaxes(10.90);
+	}
+	
+	/*
+	 * Total test. The item list is:
+	 * two imported bottle of perfume,
+	 * a bottle of perfume,
+	 * a packet of pills
+	 * a box of imported chocolates
+	 */
+	@Test
+	public void purchaseTwoImpPerfumeAndOnePerfumeAndOnePillsAndOneImpChocolateTotal() throws Exception{
+		
+		addTwoImpPerfumeAndOnePerfumeAndOnePillsAndOneImpChocolate();
+		
+		checkTotal(106.87);		
+	}
+	
+	/*
+	 * Print test. The item list is:
+	 * two imported bottle of perfume,
+	 * a bottle of perfume,
+	 * a packet of pills
+	 * a box of imported chocolates
+	 */
+	@Test
+	public void purchaseTwoImpPerfumeAndOnePerfumeAndOnePillsAndOneImpChocolatePrint() throws Exception{
+		
+		addTwoImpPerfumeAndOnePerfumeAndOnePillsAndOneImpChocolate();
+		
+		receipt.calculate();
 		
 		List<String> items = receipt.print();
 		
@@ -100,13 +179,28 @@ public class SaleTaxesTest {
 		
 	}
 	
-	private void check(double expectedSalesTaxes, double expectedTotal){
+	private void addTwoImpPerfumeAndOnePerfumeAndOnePillsAndOneImpChocolate() throws Exception{
+		
+		receipt.addItem(2, "imported bottle of perfume", 27.99);
+		receipt.addItem(1, "bottle of perfume", 18.99);
+		receipt.addItem(1, "packet of headache pills", 9.75);
+		receipt.addItem(1, "box of imported chocolates", 11.25);
+	}
+	
+	private void checkSalesTaxes(double expectedSalesTaxes){
 		
 		receipt.calculate();
 				
 		Assert.assertEquals(expectedSalesTaxes, receipt.getSalesTaxes());
-		Assert.assertEquals(expectedTotal, receipt.getTotal());
 		
 	}
+	
+	private void checkTotal(double expectedTotal){
+		
+		receipt.calculate();
+				
+		Assert.assertEquals(expectedTotal, receipt.getTotal());
+		
+	}	
 
 }
