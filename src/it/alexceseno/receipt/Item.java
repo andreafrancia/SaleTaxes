@@ -47,7 +47,7 @@ class Item {
 		double sumSalesTaxes = 0.00;
 		for(int i = 0; i < this.quantity; i++){
 			sumSalesTaxes += basicTaxes;
-			setPrice(MathUtils.round(this.getPrice() + basicTaxes));
+			setPrice(MathUtils.roundTwoDecimals(this.getPrice() + basicTaxes));
 		}
 		return sumSalesTaxes;
 	}

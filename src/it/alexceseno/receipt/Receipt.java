@@ -18,11 +18,11 @@ public class Receipt {
 	private static final float ROUND = 0.05f;
 	
 	public double getSalesTaxes() {
-		return MathUtils.round(salesTaxes);
+		return MathUtils.roundTwoDecimals(salesTaxes);
 	}
 	
 	public double getTotal() {
-		return MathUtils.round(total);
+		return MathUtils.roundTwoDecimals(total);
 	}
 	
 	public void calculate(){
@@ -63,7 +63,7 @@ public class Receipt {
 		
 		for(int i = 0; i < item.getQuantity(); i++){
 			if(i>0){
-				item.setPrice(MathUtils.round(item.getPrice() + price));
+				item.setPrice(MathUtils.roundTwoDecimals(item.getPrice() + price));
 			}
 			this.total += price;
 		}
@@ -76,7 +76,7 @@ public class Receipt {
 			double importedTaxes = ((float) Math.ceil((price * Item.IMPORT_DUTY)/ROUND)*ROUND);
 			for(int i = 0; i < item.getQuantity(); i++){
 				this.salesTaxes += importedTaxes;
-				item.setPrice(MathUtils.round(item.getPrice() + importedTaxes));
+				item.setPrice(MathUtils.roundTwoDecimals(item.getPrice() + importedTaxes));
 			}
 		}
 		
